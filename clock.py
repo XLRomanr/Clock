@@ -24,7 +24,7 @@ def update_access_time():
 def run_periodic_update():
     while True:
         update_access_time()
-        time.sleep(600)  # 每 10 分钟更新一次访问时间
+        time.sleep(6)  # 每 10 分钟更新一次访问时间
 
 # 启动后台线程（守护线程）
 Thread(target=run_periodic_update, daemon=True).start()
