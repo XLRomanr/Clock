@@ -8,7 +8,7 @@ from threading import Thread
 
 def update_access_time():
     """ 访问 Streamlit 页面时调用后端 API 记录最后访问时间 """
-    appid = "Calculator"  # 你的 Streamlit 应用 ID
+    appid = "Clock"  # 你的 Streamlit 应用 ID
     flask_server_url = "http://11.2.171.248:5000"  # 你的 Flask 服务器地址
     url = f"{flask_server_url}/api/apps/{appid}/update_access_time"
 
