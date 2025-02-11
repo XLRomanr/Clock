@@ -7,10 +7,11 @@ import requests
 from threading import Thread
 
 def update_access_time():
-    appid = "Clock"  # 你应该替换成该 Streamlit 应用的 ID
-    flask_server_url = "http://11.2.171.248:5000"  # 改成你的 Flask 服务器 IP
+    """ 访问 Streamlit 页面时调用后端 API 记录最后访问时间 """
+    appid = "Calculator"  # 你的 Streamlit 应用 ID
+    flask_server_url = "http://11.2.171.248:5000"  # 你的 Flask 服务器地址
     url = f"{flask_server_url}/api/apps/{appid}/update_access_time"
-    
+
     try:
         response = requests.post(url)
         if response.status_code == 200:
@@ -18,16 +19,12 @@ def update_access_time():
         else:
             st.warning("无法更新访问时间")
     except Exception as e:
-        print(f"Failed to update access time: {e}")
+        st.error(f"更新访问时间失败: {e}")
 
-# 后台线程定时调用更新访问时间
-def run_periodic_update():
-    while True:
-        update_access_time()
-        time.sleep(6)  # 每 10 分钟更新一次访问时间
-
-# 启动后台线程（守护线程）
-Thread(target=run_periodic_update, daemon=True).start()
+# **只在用户首次进入页面（当前会话）时调用**
+if "access_logged" not in st.session_state:
+    update_access_time()
+    st.session_state.access_logged = True  # 标记当前会话已记录访问时间
 
 # 设置页面配置
 st.set_page_config(
